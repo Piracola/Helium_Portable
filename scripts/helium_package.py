@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from zipfile import ZipFile
 
 import requests
 
@@ -43,13 +44,13 @@ def latest_release(repo):
 
 
 def find_asset(release, arch):
-    pattern = re.compile(rf"^helium_(?P<version>\d+\.\d+\.\d+(?:\.\d+)?)_{re.escape(arch)}-installer\.exe$", re.I)
+    pattern = re.compile(rf"^helium_(?P<version>\d+\.\d+\.\d+(?:\.\d+)?)_{re.escape(arch)}-windows\.zip$", re.I)
     for asset in release.get("assets", []):
         name = asset.get("name", "")
         match = pattern.match(name)
         if match and asset.get("browser_download_url"):
             return match.group("version"), asset
-    raise RuntimeError(f"No Helium {arch} installer asset found in release {release.get('tag_name')}.")
+    raise RuntimeError(f"No Helium {arch} Windows zip asset found in release {release.get('tag_name')}.")
 
 
 def download_file(url, path, verify_ssl=True):
@@ -65,6 +66,14 @@ def download_file(url, path, verify_ssl=True):
                 if chunk:
                     file.write(chunk)
     return path
+
+
+def remove_path(path):
+    path = Path(path)
+    if path.is_dir():
+        shutil.rmtree(path)
+    elif path.exists():
+        path.unlink()
 
 
 def find_7z_tool(workdir):
@@ -87,17 +96,67 @@ def find_7z_tool(workdir):
             return str(local_7zr)
         except Exception as exc:
             last_error = exc
-            if local_7zr.exists():
-                local_7zr.unlink()
+            remove_path(local_7zr)
 
     raise RuntimeError(f"Unable to locate or download 7-Zip. Last error: {last_error}")
 
 
-def extract_archive(seven_zip, archive, output_dir):
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+def archive_root(entries):
+    roots = {entry.split("/", 1)[0] for entry in entries if "/" in entry}
+    if len(roots) != 1:
+        raise RuntimeError("Unable to determine Helium zip root directory.")
+    return roots.pop()
+
+
+def chromium_version(entries, root):
+    pattern = re.compile(rf"^{re.escape(root)}/(?P<version>\d+\.\d+\.\d+\.\d+)\.manifest$", re.I)
+    for entry in entries:
+        match = pattern.match(entry)
+        if match:
+            return match.group("version")
+    raise RuntimeError("Unable to determine Chromium version from Helium zip.")
+
+
+def prepare_builder_archive(asset, version, arch, workdir):
+    workdir = Path(workdir)
+    downloads_dir = workdir / "downloads"
+    builder_archive = downloads_dir / f"helium_{version}_{arch}_builder.7z"
+    if builder_archive.exists():
+        return builder_archive
+
+    source_zip = downloads_dir / asset["name"]
+    download_file(asset["browser_download_url"], source_zip)
+    stage_dir = downloads_dir / f"helium_{version}_{arch}_builder_stage"
+    remove_path(stage_dir)
+    stage_dir.mkdir(parents=True, exist_ok=True)
+
+    with ZipFile(source_zip, "r") as source:
+        entries = [name for name in source.namelist() if name and not name.endswith("/")]
+        root = archive_root(entries)
+        browser_version = chromium_version(entries, root)
+        root_prefix = f"{root}/"
+
+        for entry in entries:
+            if not entry.startswith(root_prefix):
+                continue
+
+            relative = entry[len(root_prefix):]
+            if not relative:
+                continue
+
+            if relative.lower() == "chrome.exe":
+                target_path = stage_dir / "Helium-bin" / "chrome.exe"
+            else:
+                target_path = stage_dir / "Helium-bin" / browser_version / Path(relative)
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            with source.open(entry) as src, target_path.open("wb") as dst:
+                shutil.copyfileobj(src, dst, length=1024 * 1024)
+
+    seven_zip = find_7z_tool(workdir)
+    remove_path(builder_archive)
     result = subprocess.run(
-        [str(seven_zip), "x", str(archive), "-y", f"-o{output_dir}"],
+        [str(seven_zip), "a", "-t7z", "-mx=0", str(builder_archive.resolve()), "Helium-bin"],
+        cwd=stage_dir,
         capture_output=True,
         text=True,
     )
@@ -106,30 +165,11 @@ def extract_archive(seven_zip, archive, output_dir):
             print(result.stdout, file=sys.stderr)
         if result.stderr:
             print(result.stderr, file=sys.stderr)
-        raise RuntimeError(f"Extraction failed: {archive}")
+        raise RuntimeError("Failed to create Helium builder archive.")
 
+    remove_path(stage_dir)
 
-def prepare_inner_archive(asset, version, arch, workdir):
-    workdir = Path(workdir)
-    downloads_dir = workdir / "downloads"
-    inner_archive = downloads_dir / f"helium_{version}_{arch}.7z"
-    if inner_archive.exists():
-        return inner_archive
-
-    installer_path = downloads_dir / asset["name"]
-    download_file(asset["browser_download_url"], installer_path)
-
-    extract_dir = downloads_dir / f"helium_installer_{version}_{arch}"
-    if extract_dir.exists():
-        shutil.rmtree(extract_dir)
-    extract_archive(find_7z_tool(workdir), installer_path, extract_dir)
-
-    matches = sorted(extract_dir.rglob("helium.7z"))
-    if not matches:
-        raise FileNotFoundError(f"helium.7z not found after extracting {installer_path}")
-
-    shutil.copy2(matches[0], inner_archive)
-    return inner_archive
+    return builder_archive
 
 
 def main():
@@ -151,7 +191,7 @@ def main():
     }
 
     if extract_inner:
-        result["installer_path"] = str(prepare_inner_archive(asset, version, args.arch, Path.cwd()))
+        result["installer_path"] = str(prepare_builder_archive(asset, version, args.arch, Path.cwd()))
     else:
         result["url"] = asset["browser_download_url"]
         result["file_name"] = asset["name"]
