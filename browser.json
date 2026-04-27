@@ -1,0 +1,30 @@
+{
+  "targets": {
+    "helium_stable": {
+      "name": "Helium",
+      "display_name": "Helium Portable",
+      "output_dir": "Helium",
+      "exe_name": "..\\chrome.exe",
+      "architecture": "x64",
+      "provider": {
+        "type": "script",
+        "command": ["python", "scripts/helium_package.py", "--arch", "x64"]
+      },
+      "version_root": "Helium-bin",
+      "inner_archive": "helium.7z",
+      "layout": "move_version_root",
+      "chrome_plus_dir": "chrome++",
+      "ini_location": "app_root",
+      "version_dll_location": "app_root",
+      "start_script": "开始.bat",
+      "archive_name": "Helium_Portable_Win64_{version}_{date}.7z",
+      "release": {
+        "tag": "v{version}",
+        "title": "Helium Portable v{version}",
+        "asset_match": "Helium_Portable_Win64",
+        "version_pattern": "Helium\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)",
+        "body": "自动构建的 Helium Windows x64 便携版，集成 Chrome++ 便携化组件。\n\n构建时间: {date}\nHelium 版本: {version}\n上游项目: https://github.com/imputnet/helium\nWindows 构建: https://github.com/imputnet/helium-windows\n"
+      }
+    }
+  }
+}

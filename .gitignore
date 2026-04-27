@@ -1,0 +1,5 @@
+build/
+downloads/
+7zr.exe
+__pycache__/
+*.pyc
