@@ -11,7 +11,6 @@
         "command": ["python", "scripts/helium_package.py", "--arch", "x64"]
       },
       "version_root": "Helium-bin",
-      "inner_archive": "helium.7z",
       "layout": "move_version_root",
       "chrome_plus_dir": "chrome++",
       "ini_location": "app_root",

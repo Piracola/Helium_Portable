@@ -37,6 +37,7 @@
 ```powershell
 python -m pip install requests
 $env:PYTHONPATH="..\ChromiumPortable"
+$env:HELIUM_EXTRACT_INNER="true"
 python -m portable_builder --config browser.json --target helium_stable --workdir . build
 ```
 

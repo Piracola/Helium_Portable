@@ -64,6 +64,7 @@ jobs:
       - name: Build portable Helium
         if: github.event_name != 'schedule' || env.UPDATE_NEEDED == 'true'
         env:
+          HELIUM_EXTRACT_INNER: "true"
           PYTHONPATH: _portable_builder
         run: python -m portable_builder --config browser.json --target helium_stable --workdir . build
 
