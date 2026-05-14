@@ -41,14 +41,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYTHONPATH: _portable_builder
-        run: python -m portable_builder --config browser.json --target helium_stable --workdir . check
+        run: python -m portable_builder --config browser.json --target helium_stable,helium_prerelease --workdir . check-targets
 
       - name: Debug environment
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event_name == 'push'
         shell: pwsh
         run: |
           Write-Host "UPDATE_NEEDED: $env:UPDATE_NEEDED"
-          Write-Host "UPSTREAM_VERSION: $env:UPSTREAM_VERSION"
+          Write-Host "HELIUM_STABLE_UPDATE: $env:HELIUM_STABLE_UPDATE"
+          Write-Host "HELIUM_PRERELEASE_UPDATE: $env:HELIUM_PRERELEASE_UPDATE"
+          Write-Host "UPSTREAM_HELIUM_STABLE: $env:UPSTREAM_HELIUM_STABLE"
+          Write-Host "UPSTREAM_HELIUM_PRERELEASE: $env:UPSTREAM_HELIUM_PRERELEASE"
           Write-Host "CREATE_NEW_RELEASE: $env:CREATE_NEW_RELEASE"
           Write-Host "MINOR_UPDATE: $env:MINOR_UPDATE"
           Write-Host "RELEASE_ID: $env:RELEASE_ID"
@@ -66,26 +69,13 @@ jobs:
         env:
           HELIUM_EXTRACT_INNER: "true"
           PYTHONPATH: _portable_builder
-        run: python -m portable_builder --config browser.json --target helium_stable --workdir . build
-
-      - name: Use Helium release version for assets
-        if: github.event_name != 'schedule' || env.UPDATE_NEEDED == 'true'
-        shell: pwsh
-        run: |
-          "BUILT_VERSION=$env:UPSTREAM_VERSION" >> $env:GITHUB_ENV
-          "BROWSER_VERSION=$env:UPSTREAM_VERSION" >> $env:GITHUB_ENV
-
-      - name: Archive build
-        if: github.event_name != 'schedule' || env.UPDATE_NEEDED == 'true'
-        env:
-          PYTHONPATH: _portable_builder
-        run: python -m portable_builder --config browser.json --target helium_stable --workdir . archive
+        run: python -m portable_builder --config browser.json --target helium_stable,helium_prerelease --workdir . build-targets
 
       - name: Render release metadata
         if: github.event_name != 'schedule' || env.UPDATE_NEEDED == 'true'
         env:
           PYTHONPATH: _portable_builder
-        run: python -m portable_builder --config browser.json --target helium_stable --workdir . render-release
+        run: python -m portable_builder --config browser.json --target helium_stable,helium_prerelease --workdir . render-release-targets
 
       - name: Upload artifact
         if: github.event_name != 'schedule' || env.UPDATE_NEEDED == 'true'
@@ -100,7 +90,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYTHONPATH: _portable_builder
-        run: python -m portable_builder --config browser.json --target helium_stable --workdir . update-release
+        run: python -m portable_builder --config browser.json --target helium_stable,helium_prerelease --workdir . update-release-targets
 
       - name: Upload assets to existing release
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event_name == 'push') && env.UPDATE_NEEDED == 'true' && env.CREATE_NEW_RELEASE == 'false'

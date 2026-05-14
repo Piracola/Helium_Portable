@@ -33,14 +33,24 @@ def github_headers():
     return headers
 
 
-def latest_release(repo):
+def list_releases(repo):
     response = requests.get(
-        f"https://api.github.com/repos/{repo}/releases/latest",
+        f"https://api.github.com/repos/{repo}/releases",
+        params={"per_page": 20},
         headers=github_headers(),
         timeout=60,
     )
     response.raise_for_status()
     return response.json()
+
+
+def select_release(repo, channel):
+    releases = list_releases(repo)
+    want_prerelease = channel == "prerelease"
+    for release in releases:
+        if bool(release.get("prerelease")) == want_prerelease:
+            return release
+    raise RuntimeError(f"No {channel} release found in {repo}.")
 
 
 def find_asset(release, arch):
@@ -176,10 +186,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", default=DEFAULT_REPO)
     parser.add_argument("--arch", default="x64", choices=("x64", "arm64"))
+    parser.add_argument("--channel", default="stable", choices=("stable", "prerelease"))
     parser.add_argument("--extract-inner", action="store_true")
     args = parser.parse_args()
 
-    release = latest_release(args.repo)
+    release = select_release(args.repo, args.channel)
     asset_version, asset = find_asset(release, args.arch)
     tag_version = str(release.get("tag_name") or "").lstrip("v")
     version = tag_version or asset_version

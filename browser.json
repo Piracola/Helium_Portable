@@ -1,4 +1,10 @@
 {
+  "release": {
+    "tag_target": "helium_stable",
+    "tag": "v{helium_stable_version}",
+    "title": "Helium Portable v{helium_stable_version}",
+    "body": "自动构建的 Helium Windows x64 便携版，集成 Chrome++ 便携化组件。\n\n构建时间: {date}\nHelium Stable 版本: {helium_stable_version}\nHelium Preview 版本: {helium_prerelease_version}\n上游项目: https://github.com/imputnet/helium\nWindows 构建: https://github.com/imputnet/helium-windows\n"
+  },
   "targets": {
     "helium_stable": {
       "name": "Helium",
@@ -6,9 +12,17 @@
       "output_dir": "Helium",
       "exe_name": "..\\chrome.exe",
       "architecture": "x64",
+      "env_prefix": "HELIUM_STABLE",
       "provider": {
         "type": "script",
-        "command": ["python", "scripts/helium_package.py", "--arch", "x64"]
+        "command": [
+          "python",
+          "scripts/helium_package.py",
+          "--arch",
+          "x64",
+          "--channel",
+          "stable"
+        ]
       },
       "version_root": "Helium-bin",
       "layout": "move_version_root",
@@ -18,11 +32,38 @@
       "start_script": "开始.bat",
       "archive_name": "Helium_Portable_Win64_{version}_{date}.7z",
       "release": {
-        "tag": "v{version}",
-        "title": "Helium Portable v{version}",
-        "asset_match": "Helium_Portable_Win64",
-        "version_pattern": "Helium\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)",
-        "body": "自动构建的 Helium Windows x64 便携版，集成 Chrome++ 便携化组件。\n\n构建时间: {date}\nHelium 版本: {version}\n上游项目: https://github.com/imputnet/helium\nWindows 构建: https://github.com/imputnet/helium-windows\n"
+        "asset_match": "Helium_Portable_Win64_",
+        "version_pattern": "Helium\\s*Stable\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
+      }
+    },
+    "helium_prerelease": {
+      "name": "Helium",
+      "display_name": "Helium Portable Preview",
+      "output_dir": "Helium",
+      "exe_name": "..\\chrome.exe",
+      "architecture": "x64",
+      "env_prefix": "HELIUM_PRERELEASE",
+      "provider": {
+        "type": "script",
+        "command": [
+          "python",
+          "scripts/helium_package.py",
+          "--arch",
+          "x64",
+          "--channel",
+          "prerelease"
+        ]
+      },
+      "version_root": "Helium-bin",
+      "layout": "move_version_root",
+      "chrome_plus_dir": "chrome++",
+      "ini_location": "app_root",
+      "version_dll_location": "app_root",
+      "start_script": "开始.bat",
+      "archive_name": "Helium_Portable_Preview_Win64_{version}_{date}.7z",
+      "release": {
+        "asset_match": "Helium_Portable_Preview_Win64_",
+        "version_pattern": "Helium\\s*Preview\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
       }
     }
   }
