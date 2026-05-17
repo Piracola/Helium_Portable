@@ -30,9 +30,9 @@
       "ini_location": "app_root",
       "version_dll_location": "app_root",
       "start_script": "开始.bat",
-      "archive_name": "Helium_Portable_Win64_{version}_{date}.7z",
+      "archive_name": "Helium_{version}_{date}.7z",
       "release": {
-        "asset_match": "Helium_Portable_Win64_",
+        "asset_match": "Helium_",
         "version_pattern": "Helium\\s*Stable\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
       }
     },
@@ -60,9 +60,9 @@
       "ini_location": "app_root",
       "version_dll_location": "app_root",
       "start_script": "开始.bat",
-      "archive_name": "Helium_Portable_Preview_Win64_{version}_{date}.7z",
+      "archive_name": "Helium_Preview_{version}_{date}.7z",
       "release": {
-        "asset_match": "Helium_Portable_Preview_Win64_",
+        "asset_match": "Helium_Preview_",
         "version_pattern": "Helium\\s*Preview\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
       }
     }

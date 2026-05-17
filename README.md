@@ -26,7 +26,7 @@
 **安装**
 
 1. 访问 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包。
-2. `Helium_Portable_Win64_...` 为正式版，`Helium_Portable_Preview_Win64_...` 为预发行版。
+2. `Helium_...` 为正式版，`Helium_Preview_...` 为预发行版。
 3. 解压到任意目录。
 4. 运行 `开始.bat` 创建桌面快捷方式，或直接启动 `Helium\chrome.exe`。
 

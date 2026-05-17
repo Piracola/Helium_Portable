@@ -45,3 +45,4 @@ python -m portable_builder --config browser.json --target helium_stable,helium_p
 - The builder's `inject_dll` stage uses `setdll` to inject `version.dll` into `chrome.exe` with a portable relative path. Since `version_dll_location` is `app_root`, the DLL lands next to chrome.exe (not in the version subdirectory).
 - `exe_name` is `..\\chrome.exe` (relative path from the version subdirectory back to the app root).
 - New GitHub Releases are still keyed to the stable version tag. If only the upstream prerelease changes, the workflow updates the existing latest release body and replaces only the preview asset.
+- Archive filenames and release metadata should use the Helium package version, while the internal `Helium-bin/<version>` directory continues to follow the bundled Chromium version required by the upstream layout.
