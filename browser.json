@@ -32,7 +32,6 @@
       "start_script": "开始.bat",
       "archive_name": "Helium_{version}_{date}.7z",
       "release": {
-        "asset_match": "Helium_",
         "version_pattern": "Helium\\s*Stable\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
       }
     },
@@ -62,7 +61,6 @@
       "start_script": "开始.bat",
       "archive_name": "Helium_Preview_{version}_{date}.7z",
       "release": {
-        "asset_match": "Helium_Preview_",
         "version_pattern": "Helium\\s*Preview\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
       }
     }

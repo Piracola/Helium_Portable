@@ -20,6 +20,7 @@
 - 集成 Chrome++，可在 `chrome++\chrome++.ini` 中调整增强选项
 - 跟随 Helium Windows x64 正式版自动检查和发布
 - 同一个 GitHub Release 同时提供正式版便携包和最新预发行版便携包
+- 当正式版创建新 release 而预发行版未更新时，会自动沿用上一版 preview 压缩包，保持同一个 release 下两个包都可下载
 
 ## 快速开始
 

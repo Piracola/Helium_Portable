@@ -33,7 +33,7 @@ python -m portable_builder --config browser.json --target helium_stable,helium_p
 
 ## Key Files
 
-- **`browser.json`** — Build target config. It defines `helium_stable` and `helium_prerelease`, both using the same packaging layout, and a shared top-level `release` section so one GitHub Release carries both assets. The stable target controls the release tag/title.
+- **`browser.json`** — Build target config. It defines `helium_stable` and `helium_prerelease`, both using the same packaging layout, and a shared top-level `release` section so one GitHub Release carries both assets. The stable target controls the release tag/title. Asset matching is intentionally inferred from each target's `archive_name`, so stable/preview cleanup stays isolated.
 - **`scripts/helium_package.py`** — The script provider. Queries `imputnet/helium-windows` releases, selects either the latest stable or latest prerelease based on `--channel`, finds the x64 zip asset, and either returns its URL or (with `--extract-inner` / `HELIUM_EXTRACT_INNER`) restructures the zip into a builder-compatible 7z archive. Key behavior: `chrome.exe` goes to `Helium-bin/chrome.exe`, everything else to `Helium-bin/<chromium_version>/...`.
 - **`chrome++/chrome++.ini`** — Chrome++ config with `data_dir=%app%\Data` and `cache_dir=%app%\Cache` (relative to chrome.exe's directory, since `ini_location` is `app_root`).
 - **`chrome++/injectpe.bat`** — Manual DLL injection script (targets `helium.exe`; the automated builder uses `setdll` directly).
@@ -45,4 +45,5 @@ python -m portable_builder --config browser.json --target helium_stable,helium_p
 - The builder's `inject_dll` stage uses `setdll` to inject `version.dll` into `chrome.exe` with a portable relative path. Since `version_dll_location` is `app_root`, the DLL lands next to chrome.exe (not in the version subdirectory).
 - `exe_name` is `..\\chrome.exe` (relative path from the version subdirectory back to the app root).
 - New GitHub Releases are still keyed to the stable version tag. If only the upstream prerelease changes, the workflow updates the existing latest release body and replaces only the preview asset.
+- When a new stable tag creates a new shared release but preview has not changed, the builder now carries forward the existing preview archive so the shared release keeps both assets.
 - Archive filenames and release metadata should use the Helium package version, while the internal `Helium-bin/<version>` directory continues to follow the bundled Chromium version required by the upstream layout.
