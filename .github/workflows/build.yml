@@ -15,7 +15,7 @@ on:
     - cron: "0 9 * * *"
 
 env:
-  TARGETS: helium_stable,helium_prerelease
+  TARGETS: helium_stable
 
 jobs:
   # Version discovery is pure HTTP and needs no Windows, so the Windows runner
@@ -61,7 +61,6 @@ jobs:
         run: |
           echo "UPDATE_NEEDED=${{ steps.check.outputs.UPDATE_NEEDED }}"
           echo "HELIUM_STABLE_UPDATE=${{ steps.check.outputs.HELIUM_STABLE_UPDATE }} (${{ steps.check.outputs.UPSTREAM_HELIUM_STABLE }})"
-          echo "HELIUM_PRERELEASE_UPDATE=${{ steps.check.outputs.HELIUM_PRERELEASE_UPDATE }} (${{ steps.check.outputs.UPSTREAM_HELIUM_PRERELEASE }})"
           echo "CREATE_NEW_RELEASE=${{ steps.check.outputs.CREATE_NEW_RELEASE }}"
           echo "MINOR_UPDATE=${{ steps.check.outputs.MINOR_UPDATE }}"
           echo "RELEASE_ID=${{ steps.check.outputs.RELEASE_ID }}"

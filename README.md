@@ -24,7 +24,7 @@
 
 ## 项目简介
 
-本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，分别跟踪最新正式版与最新预发行版，下载 x64 installer，解包其中的 `Helium-bin`，注入 Chrome++，再发布为可直接解压使用的便携版。
+本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，跟踪最新正式版，下载 x64 zip，重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。上游目前只发布正式版 Release；每个上游版本升级都会创建一条新的 GitHub Release，历史构建可回溯下载。
 
 ## 功能特性
 
@@ -38,17 +38,15 @@
 - 阻断 Helium Windows 的整体自动更新，防止官方安装器在 C 盘创建另一份 Helium；安全组件更新不受影响
 - 关闭默认浏览器检查，便携版不会主动要求修改系统默认应用
 - 跟随 Helium Windows x64 正式版自动检查和发布
-- 同一个 GitHub Release 同时提供正式版便携包和最新预发行版便携包
-- 当正式版创建新 release 而预发行版未更新时，会自动沿用上一版 preview 压缩包，保持同一个 release 下两个包都可下载
+- 每个上游版本升级创建新的 GitHub Release，保留历史版本可下载
 
 ## 快速开始
 
 **安装**
 
-1. 访问 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包。
-2. `Helium_...` 为正式版，`Helium_Preview_...` 为预发行版。
-3. 解压到任意目录。
-4. 运行 `开始.bat` 创建桌面快捷方式，或直接启动 `Helium\chrome.exe`。
+1. 访问 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包（`Helium_<版本>_<日期>.7z`）。
+2. 解压到任意目录。
+3. 运行 `开始.bat` 创建桌面快捷方式，或直接启动 `Helium\chrome.exe`。
 
 **更新**
 
@@ -88,7 +86,6 @@ python -m pip install requests
 $env:PYTHONPATH="..\ChromiumPortable"
 $env:HELIUM_EXTRACT_INNER="true"
 python -m portable_builder --config browser.json --target helium_stable --workdir . build
-python -m portable_builder --config browser.json --target helium_prerelease --workdir . build
 ```
 
 ## 致谢

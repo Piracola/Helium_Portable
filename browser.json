@@ -3,7 +3,8 @@
     "tag_target": "helium_stable",
     "tag": "v{helium_stable_version}",
     "title": "Helium {helium_stable_version}",
-    "body": "自动构建的 Helium Windows x64 便携版，集成 Chrome++ 便携化增强组件。\n\n> 安装、更新与常见问题：https://piracola.github.io/ChromiumPortable/helium/\n\n## 版本\n- Helium Stable 版本: {helium_stable_version}\n- Helium Preview 版本: {helium_prerelease_version}\n\n## 使用说明\n- 解压到任意目录，双击 `开始.bat` 创建桌面快捷方式。\n- 用户数据保存在与 `Helium` 文件夹同级的 `Data`、`Cache` 目录，随目录整体移动。\n- 更新时只覆盖 `Helium` 文件夹即可，`Data` 与 `Cache` 不受影响。\n- 已阻断 Helium 的整体自动更新并关闭默认浏览器检查，防止在 C 盘另行安装 Helium 并覆盖系统关联。\n\n## 文件校验\n| 文件 | 大小 | SHA256 |\n| --- | --- | --- |\n| `{helium_stable_archive}` | {helium_stable_size} | `{helium_stable_sha256}` |\n| `{helium_prerelease_archive}` | {helium_prerelease_size} | `{helium_prerelease_sha256}` |\n\n## 构建信息\n- 构建时间: {date}\n- Chrome++ 版本: {chrome_plus_version}\n- 构建记录: {run_url}\n- 上游项目: https://github.com/imputnet/helium\n- 上游发行说明: https://github.com/imputnet/helium-windows/releases\n"
+    "create_new_release_on": "upgrade",
+    "body": "自动构建的 Helium Windows x64 便携版，集成 Chrome++ 便携化增强组件。\n\n> 安装、更新与常见问题：https://piracola.github.io/ChromiumPortable/helium/\n\n## 版本\n- Helium 版本: {helium_stable_version}\n\n## 使用说明\n- 解压到任意目录，双击 `开始.bat` 创建桌面快捷方式。\n- 用户数据保存在与 `Helium` 文件夹同级的 `Data`、`Cache` 目录，随目录整体移动。\n- 更新时只覆盖 `Helium` 文件夹即可，`Data` 与 `Cache` 不受影响。\n- 已阻断 Helium 的整体自动更新并关闭默认浏览器检查，防止在 C 盘另行安装 Helium 并覆盖系统关联。\n\n## 文件校验\n| 文件 | 大小 | SHA256 |\n| --- | --- | --- |\n| `{helium_stable_archive}` | {helium_stable_size} | `{helium_stable_sha256}` |\n\n## 构建信息\n- 构建时间: {date}\n- Chrome++ 版本: {chrome_plus_version}\n- 构建记录: {run_url}\n- 上游项目: https://github.com/imputnet/helium\n- 上游发行说明: https://github.com/imputnet/helium-windows/releases\n"
   },
   "targets": {
     "helium_stable": {
@@ -32,36 +33,7 @@
       "start_script": "开始.bat",
       "archive_name": "Helium_{version}_{date}.7z",
       "release": {
-        "version_pattern": "Helium\\s*Stable\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
-      }
-    },
-    "helium_prerelease": {
-      "name": "Helium",
-      "display_name": "Helium Preview",
-      "output_dir": "Helium",
-      "exe_name": "..\\chrome.exe",
-      "architecture": "x64",
-      "env_prefix": "HELIUM_PRERELEASE",
-      "provider": {
-        "type": "script",
-        "command": [
-          "python",
-          "scripts/helium_package.py",
-          "--arch",
-          "x64",
-          "--channel",
-          "prerelease"
-        ]
-      },
-      "version_root": "Helium-bin",
-      "layout": "move_version_root",
-      "chrome_plus_dir": "chrome++",
-      "ini_location": "app_root",
-      "version_dll_location": "app_root",
-      "start_script": "开始.bat",
-      "archive_name": "Helium_Preview_{version}_{date}.7z",
-      "release": {
-        "version_pattern": "Helium\\s*Preview\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
+        "version_pattern": "Helium(?:\\s+Stable)?\\s*版本[:：]\\s*(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)"
       }
     }
   }
