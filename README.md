@@ -20,7 +20,7 @@
 - [Helium 便携版下载页](https://piracola.github.io/ChromiumPortable/helium/)：安装、更新、校验与常见问题的完整说明。
 - [ChromiumPortable（主仓库/构建核心）](https://github.com/Piracola/ChromiumPortable)：Chromium 系便携版构建核心，提供可复用的自动构建、打包和发行流程。
 - [Chrome-Portable](https://github.com/Piracola/Chrome-Portable)：同系列 Google Chrome 便携版项目。
-- [Edge_Portable](https://github.com/betacola/Edge_Portable)：同系列 Microsoft Edge 便携版项目。
+- [Edge_Portable](https://github.com/Piracola/Edge_Portable)：同系列 Microsoft Edge 便携版项目。
 
 ## 项目简介
 
