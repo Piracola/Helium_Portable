@@ -119,6 +119,9 @@ jobs:
           "BUILD_DATE=$date" >> $env:GITHUB_ENV
 
       - name: Build portable Helium
+        env:
+          # 脚本提供器据此把上游平铺 zip 重排成 Helium-bin 布局再交引擎
+          HELIUM_EXTRACT_INNER: "true"
         run: |
           & $env:CPB_ENGINE --config browser.json --workdir . build-targets "$env:TARGETS"
 
