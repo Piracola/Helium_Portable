@@ -18,13 +18,26 @@
 ## 仓库导航
 
 - [Helium 便携版下载页](https://piracola.github.io/ChromiumPortable/helium/)：安装、更新、校验与常见问题的完整说明。
-- [ChromiumPortable（主仓库/构建核心）](https://github.com/Piracola/ChromiumPortable)：Chromium 系便携版构建核心，提供可复用的自动构建、打包和发行流程。
+- [ChromiumPortable（主仓库/构建核心）](https://github.com/Piracola/ChromiumPortable)：通用构建核心仓库。
 - [Chrome-Portable](https://github.com/Piracola/Chrome-Portable)：同系列 Google Chrome 便携版项目。
 - [Edge_Portable](https://github.com/Piracola/Edge_Portable)：同系列 Microsoft Edge 便携版项目。
 
 ## 项目简介
 
-本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，跟踪最新正式版，下载 x64 zip，重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。上游目前只发布正式版 Release；每个上游版本升级都会创建一条新的 GitHub Release，历史构建可回溯下载。
+本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，跟踪最新正式版，下载 x64 zip，重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。
+
+目前每个上游版本升级都会创建一条新的 GitHub Release。
+
+## 快速开始
+
+1. 从 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包（`Helium_<版本>_<日期>.7z`），解压到任意位置
+2. 运行 `开始.bat` 创建桌面快捷方式，之后从快捷方式启动
+
+## 更新
+
+1. 关闭浏览器（重要数据建议先备份 `Data` 目录）
+2. 删除 `Helium` 文件夹或重命名为 `Helium old` 以便于回退
+3. 解压新版压缩包内的 `Helium` 文件夹（`Data`、`Cache` 保持不动）
 
 ## 功能特性
 
@@ -35,40 +48,19 @@
   - 新建前台标签页打开地址栏内容或书签
   - 免验证系统登录密码即可查看已保存密码
   - 支持右键关闭标签、老板键、翻译快捷键、按键映射、启动/退出钩子等扩展（默认未启用，详见 `chrome++.ini`）
-- 阻断 Helium Windows 的整体自动更新，防止官方安装器在 C 盘创建另一份 Helium；安全组件更新不受影响
-- 关闭默认浏览器检查，便携版不会主动要求修改系统默认应用
-- 跟随 Helium Windows x64 正式版自动检查和发布
-- 每个上游版本升级创建新的 GitHub Release，保留历史版本可下载
+- 阻断 Helium Windows 的整体自动更新，防止官方安装器在 C 盘创建另一份 Helium；
 
-## 快速开始
+## 更改数据目录位置
 
-**安装**
+数据目录的位置由 `Helium\chrome++.ini` 里的 `data_dir` 和 `cache_dir` 两行决定，默认值是 `%app%\..\Data` 和 `%app%\..\Cache`（`%app%` 代表 `chrome.exe` 所在目录，所以默认落在 `Helium` 文件夹旁边）。值支持绝对路径，目录会自动创建。注意这个文件是 **UTF-16 编码**（记事本另存时选「Unicode」）。
 
-1. 访问 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包（`Helium_<版本>_<日期>.7z`）。
-2. 解压到任意目录。
-3. 运行 `开始.bat` 创建桌面快捷方式，或直接启动 `Helium\chrome.exe`。
+默认路径本就跟着程序走，整个文件夹搬动不需要改，只有想把数据放到程序外（比如另一个分区）时才需要动它。
 
-**更新**
+<details>
+<summary><b>C 盘已出现 Helium 安装版怎么办</b></summary>
+Helium Windows 自带的 WinSparkle 更新器会把官方安装器安装到 `%LOCALAPPDATA%\imput\Helium\Application`。
 
-保留旧版与 `Helium` 文件夹同级的 `Data`（重要数据建议先备份），删除旧版 `Helium` 文件夹后解压新版到同一目录，再把 `Data` 放回新版 `Helium` 文件夹旁边。
-
-**更改数据目录位置**
-
-数据目录的位置由 `Helium\chrome++.ini` 里的 `data_dir` 和 `cache_dir` 两行决定，默认值是 `%app%\..\Data` 和 `%app%\..\Cache`（`%app%` 代表 `chrome.exe` 所在目录，所以默认落在 `Helium` 文件夹旁边）。想放到别的位置，改这两行后重启浏览器即可，目录会自动创建。
-
-值既可以写绝对路径（如 `data_dir=D:\BrowserData`），也可以用 `%app%` 加相对层数。要注意这个文件是 **UTF-16 编码**，用记事本编辑后另存时请把编码选成「Unicode」，否则浏览器读不到配置、设置会静默失效。
-
-默认路径本来就会跟着程序走，整个文件夹一起搬动不需要改这里；只有想把数据放到程序外面（比如放在空间更大的分区）时才需要改。
-
-**卸载**
-
-删除 `Helium` 文件夹即可完成卸载（便携，不写注册表）。
-
-### C 盘已出现 Helium 安装版
-
-Helium Windows 自带的 WinSparkle 更新器会把官方安装器安装到
-`%LOCALAPPDATA%\imput\Helium\Application`。安装版和便携版使用同一组浏览器注册名，
-所以安装过程会把原本指向便携版的默认浏览器路径覆盖成 C 盘路径。
+安装版和便携版使用同一组浏览器注册名，所以安装过程会把原本指向便携版的默认浏览器路径覆盖成 C 盘路径。
 
 1. 先关闭所有 Helium 窗口。
 2. 在 Windows「设置 > 应用 > 已安装的应用」中卸载 Helium。
@@ -78,36 +70,33 @@ Helium Windows 自带的 WinSparkle 更新器会把官方安装器安装到
 
 清理前，脚本会把涉及的注册表项备份到 `%LOCALAPPDATA%\HeliumPortable\RegistryBackups`。它不依赖同目录下的其他文件，可以单独下载到任意位置运行。如需只查看计划清理的项目，可在命令行运行 `清理Helium安装版注册表.bat --dry-run`，演练模式不会修改注册表。
 
-2026-07-28 之后构建的便携版会在 Chrome++ 层和快捷方式层同时把整体更新清单指向保留的无效域名，从而阻断安装器下载。
-旧版用户可在 `Helium\chrome++.ini` 的 `command_line=` 末尾追加：
+2026-07-28 之后构建的便携版会在 Chrome++ 层和快捷方式层同时把整体更新清单指向保留的无效域名，从而阻断安装器下载。旧版用户可在 `Helium\chrome++.ini` 的 `command_line=` 末尾追加：
 
 ```text
 --custom-update-server-url=https://updates.invalid/ --no-default-browser-check
 ```
 
-**本地构建**（Windows + Python 3，需将 `ChromiumPortable` 检出到同级目录）
+</details>
 
-`HELIUM_EXTRACT_INNER=true` 用于触发 `helium_package.py` 把上游 zip 重组为构建器兼容的 `Helium-bin` 布局；更多细节见 `CLAUDE.md`。
+## 卸载
 
-```powershell
-python -m pip install requests
-$env:PYTHONPATH="..\ChromiumPortable"
-$env:HELIUM_EXTRACT_INNER="true"
-python -m portable_builder --config browser.json --target helium_stable --workdir . build
-```
+删除解压根目录即可，便携版不写注册表。
+
+## 本地构建
+
+本地构建由主仓库的图形构建器完成，见 [ChromiumPortable](https://github.com/Piracola/ChromiumPortable)。
 
 ## 致谢
 
 | 项目 | 说明 |
 | --- | --- |
 | [imputnet/helium](https://github.com/imputnet/helium) | Helium 浏览器源码 |
-| [imputnet/helium-windows](https://github.com/imputnet/helium-windows) | Helium Windows 构建发布 |
 | [Bush2021/chrome_plus](https://github.com/Bush2021/chrome_plus) | Chrome++ 便携化组件 |
 | [Piracola/ChromiumPortable](https://github.com/Piracola/ChromiumPortable) | 通用便携版构建核心 |
 
 ## 许可证
 
-本仓库构建脚本遵循 MIT 许可证。Helium、Chromium 与 Chrome++ 的版权归各自项目所有。
+本仓库构建脚本遵循 MIT 许可证。
 
 ---
 
