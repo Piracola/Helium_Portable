@@ -110,8 +110,8 @@ jobs:
 
       - name: Build portable Helium
         env:
-          # 脚本提供器据此把上游平铺 zip 重排成 Helium-bin 布局再交引擎
-          HELIUM_EXTRACT_INNER: "true"
+          # github_release 提供器查上游 Release API；未带 token 会撞匿名限额
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           & $env:CPB_ENGINE --config browser.json --workdir . build-targets "$env:TARGETS"
 
@@ -120,6 +120,8 @@ jobs:
           & $env:CPB_ENGINE --config browser.json --workdir . verify-targets
 
       - name: Render release metadata
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           & $env:CPB_ENGINE --config browser.json --workdir . render-release-targets "$env:TARGETS"
 
