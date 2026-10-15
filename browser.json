@@ -15,18 +15,15 @@
       "architecture": "x64",
       "env_prefix": "HELIUM_STABLE",
       "provider": {
-        "type": "script",
-        "command": [
-          "python",
-          "scripts/helium_package.py",
-          "--arch",
-          "x64",
-          "--channel",
-          "stable"
-        ]
+        "type": "github_release",
+        "repo": "imputnet/helium-windows",
+        "channel": "stable",
+        "asset_pattern": "helium_(?P<version>\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)_x64-windows\\.zip"
       },
       "version_root": "Helium-bin",
       "layout": "move_version_root",
+      "repack_layout": "version_root",
+      "repack_exe_name": "chrome.exe",
       "chrome_plus_dir": "chrome++",
       "ini_location": "app_root",
       "version_dll_location": "app_root",
