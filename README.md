@@ -2,7 +2,7 @@
 
 # Helium 便携版
 
-全自动构建的 [Helium](https://github.com/imputnet/helium) Windows x64 便携版，集成 Chrome++ 便携化组件。
+全自动构建的 [Helium](https://github.com/imputnet/helium) Windows 便携版（x64 / ARM64），集成 Chrome++ 便携化组件。
 
 [![最新版本][badge-release]][link-release]
 [![总下载量][badge-downloads]][link-release]
@@ -24,13 +24,13 @@
 
 ## 项目简介
 
-本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，跟踪最新正式版，下载 x64 zip，重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。
+本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，跟踪最新正式版，下载对应架构的 zip（x64 / ARM64），重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。
 
 目前每个上游版本升级都会创建一条新的 GitHub Release。
 
 ## 快速开始
 
-1. 从 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包（`Helium_<版本>_<日期>.7z`），解压到任意位置
+1. 从 [Releases](https://github.com/Piracola/Helium_Portable/releases/latest) 下载最新压缩包（`Helium_<版本>_<日期>.7z` 为 x64，`Helium_arm64_<版本>_<日期>.7z` 为 Windows on Arm），解压到任意位置
 2. 运行 `开始.bat` 创建桌面快捷方式，之后从快捷方式启动
 
 ## 更新
