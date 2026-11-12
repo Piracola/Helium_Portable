@@ -34,7 +34,8 @@ The build system is provided by [ChromiumPortable](https://github.com/Piracola/C
 2. Delete the `Helium` folder, or rename it to `Helium old` for a rollback option.
 3. Extract the `Helium` folder from the new archive; leave `Data` and `Cache` alone.
 
-## What if an installed Helium shows up on my C: drive?
+<details>
+<summary>What if an installed Helium shows up on my C: drive?</summary>
 
 Helium's built-in WinSparkle updater on Windows installs the official installer into `%LOCALAPPDATA%\imput\Helium\Application`. The installed build and the portable build share the same browser registration names, so installing overwrites the default-browser path that pointed at the portable copy with a C: path.
 
@@ -52,6 +53,8 @@ Portable builds made after 2026-07-28 point the whole update manifest at a reser
 --custom-update-server-url=https://updates.invalid/ --no-default-browser-check
 ```
 
+</details>
+
 ## Features
 
 - Profile data and cache live in the `Data` and `Cache` folders next to `Helium` (at the extraction root)
@@ -63,11 +66,14 @@ Portable builds made after 2026-07-28 point the whole update manifest at a reser
   - Optional extras: close tabs with the right mouse button, boss key, translate shortcut, key remapping, start/exit hooks and more (off by default; see `chrome++.ini`)
 - Helium's own auto-update is blocked, so the official installer never creates a second Helium on your C: drive
 
-## Changing the data directory
+<details>
+<summary>Changing the data directory</summary>
 
 The location is set by the `data_dir` and `cache_dir` lines in `Helium\chrome++.ini`. Defaults are `%app%\..\Data` and `%app%\..\Cache`, where `%app%` is the folder holding `chrome.exe`, so data lands next to `Helium`. Absolute paths are accepted and directories are created as needed. Note that the file is **UTF-16 encoded** (pick "Unicode" when saving from Notepad).
 
 Because the defaults are relative to the program folder, moving the whole tree needs no edits. Switch to an absolute path if you want data stored outside the program folder.
+
+</details>
 
 ## Uninstalling
 
@@ -79,13 +85,16 @@ Delete the extraction root. The portable build writes nothing to the registry.
 - [Chrome-Portable](https://github.com/Piracola/Chrome-Portable): the Google Chrome portable build
 - [Edge_Portable](https://github.com/Piracola/Edge_Portable): the Microsoft Edge portable build
 
-## Credits
+<details>
+<summary>Credits</summary>
 
 | Project | Role |
 | --- | --- |
 | [imputnet/helium](https://github.com/imputnet/helium) | Helium browser source |
 | [Bush2021/chrome\_plus](https://github.com/Bush2021/chrome_plus) | Chrome++ portability components |
 | [Piracola/ChromiumPortable](https://github.com/Piracola/ChromiumPortable) | Shared portable build core |
+
+</details>
 
 ## License
 

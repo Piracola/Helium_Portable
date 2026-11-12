@@ -34,7 +34,8 @@
 2. 删除 `Helium` 文件夹或重命名为 `Helium old` 以便回退。
 3. 解压新版压缩包内的 `Helium` 文件夹，`Data`、`Cache` 保持不动。
 
-## C 盘已出现 Helium 安装版怎么办
+<details>
+<summary>C 盘已出现 Helium 安装版怎么办</summary>
 
 Helium Windows 自带的 WinSparkle 更新器会把官方安装器装到 `%LOCALAPPDATA%\imput\Helium\Application`。安装版和便携版使用同一组浏览器注册名，所以安装过程会把原本指向便携版的默认浏览器路径覆盖成 C 盘路径。
 
@@ -52,6 +53,8 @@ Helium Windows 自带的 WinSparkle 更新器会把官方安装器装到 `%LOCAL
 --custom-update-server-url=https://updates.invalid/ --no-default-browser-check
 ```
 
+</details>
+
 ## 功能特性
 
 - 用户数据与缓存保存在与 `Helium` 文件夹同级的 `Data` 和 `Cache` 文件夹（解压根目录下）
@@ -63,11 +66,14 @@ Helium Windows 自带的 WinSparkle 更新器会把官方安装器装到 `%LOCAL
   - 支持右键关闭标签、老板键、翻译快捷键、按键映射、启动/退出钩子等扩展（默认未启用，详见 `chrome++.ini`）
 - 阻断 Helium Windows 的整体自动更新，防止官方安装器在 C 盘创建另一份 Helium
 
-## 更改数据目录位置
+<details>
+<summary>更改数据目录位置</summary>
 
 数据目录的位置由 `Helium\chrome++.ini` 里的 `data_dir` 和 `cache_dir` 两行决定，默认值是 `%app%\..\Data` 和 `%app%\..\Cache`（`%app%` 代表 `chrome.exe` 所在目录，所以默认落在 `Helium` 文件夹旁边）。值支持绝对路径，目录会自动创建。注意这个文件是 **UTF-16 编码**（记事本另存时选「Unicode」）。
 
 默认路径相对于主程序目录，移动整个文件夹不需要修改。需要将数据存放到程序目录之外时，可改用绝对路径。
+
+</details>
 
 ## 卸载
 
@@ -79,13 +85,16 @@ Helium Windows 自带的 WinSparkle 更新器会把官方安装器装到 `%LOCAL
 - [Chrome-Portable](https://github.com/Piracola/Chrome-Portable)：同系列 Google Chrome 便携版
 - [Edge_Portable](https://github.com/Piracola/Edge_Portable)：同系列 Microsoft Edge 便携版
 
-## 致谢
+<details>
+<summary>致谢</summary>
 
 | 项目 | 说明 |
 | --- | --- |
 | [imputnet/helium](https://github.com/imputnet/helium) | Helium 浏览器源码 |
 | [Bush2021/chrome_plus](https://github.com/Bush2021/chrome_plus) | Chrome++ 便携化组件 |
 | [Piracola/ChromiumPortable](https://github.com/Piracola/ChromiumPortable) | 通用便携版构建核心 |
+
+</details>
 
 ## 许可证
 
