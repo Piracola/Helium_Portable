@@ -1,6 +1,6 @@
 @echo off
 
-set target_exe=helium.exe
+set target_exe=chrome.exe
 
 if not exist %target_exe% (
     echo Error: %target_exe% not found in current directory.
