@@ -17,7 +17,7 @@ Portable Windows build of [Helium](https://github.com/imputnet/helium) with Chro
 
 ## About
 
-GitHub Actions checks the Windows builds from [imputnet/helium-windows](https://github.com/imputnet/helium-windows) on a schedule, tracks the latest stable release, downloads the zip for each architecture (x64 / ARM64), reshapes it into the `Helium-bin` layout, injects Chrome++, and publishes it as an extract-and-run portable build.
+[ChromiumPortable](https://github.com/Piracola/ChromiumPortable) checks the Windows builds from [imputnet/helium-windows](https://github.com/imputnet/helium-windows) on a daily schedule and dispatches a build here; GitHub Actions then tracks the latest stable release, downloads the zip for each architecture (x64 / ARM64), reshapes it into the `Helium-bin` layout, injects Chrome++, and publishes it as an extract-and-run portable build.
 
 For now, every upstream version upgrade creates a new GitHub Release.
 

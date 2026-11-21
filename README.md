@@ -17,7 +17,7 @@
 
 ## 项目简介
 
-本仓库通过 GitHub Actions 定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建，跟踪最新正式版，下载对应架构的 zip（x64 / ARM64），重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。
+[ChromiumPortable](https://github.com/Piracola/ChromiumPortable) 每天定时检查 [imputnet/helium-windows](https://github.com/imputnet/helium-windows) 的 Windows 构建并派发本仓库构建；本仓库跟踪最新正式版，下载对应架构的 zip（x64 / ARM64），重组为 `Helium-bin` 布局，注入 Chrome++，再发布为可直接解压使用的便携版。
 
 目前每个上游版本升级都会创建一条新的 GitHub Release。
 
